@@ -1,6 +1,9 @@
 package com.app.task.controller;
 
+import com.app.task.model.dto.TaskAddDTO;
+import com.app.task.model.dto.TaskCreateDTO;
 import com.app.task.service.TaskService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +19,9 @@ public class TaskController {
 
     // Agregar Tarea
     @PostMapping("/add")
-    public ResponseEntity<> setTask(@RequestBody ){
-
+    public ResponseEntity<TaskCreateDTO> setTask(@RequestBody TaskAddDTO taskAddDTO){
+        TaskCreateDTO taskCreateDTO = this.taskService.addTask(taskAddDTO);
+        return new ResponseEntity<>(taskCreateDTO, HttpStatus.CREATED);
     }
 
     // Obtener todas las Tareas
