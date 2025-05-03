@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,7 +30,9 @@ public class TaskController {
 
     // Obtener todas las Tareas
     @GetMapping("/all")
-    public ResponseEntity<> getTaskAll(){
+    public ResponseEntity<List<TaskResponseDTO>> getTaskAll(){
+        List<TaskResponseDTO> tasks = this.taskService.getAllTask();
+        return tasks.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
     // Obterner Tarea por id

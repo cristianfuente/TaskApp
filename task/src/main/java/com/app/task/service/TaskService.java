@@ -8,6 +8,7 @@ import com.app.task.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,6 +69,14 @@ public class TaskService {
         }
         TaskResponseDTO taskResponseDTO = convertTaskResponseDTO(taskOpt.get());
         return Optional.of(taskResponseDTO);
+    }
+
+    // Listar todas las Tasks
+    public List<TaskResponseDTO> getAllTask(){
+        List<Task> tasks = this.taskRepository.findAll();
+        return  tasks.stream()
+                    .map(this::convertTaskResponseDTO)
+                    .toList();
     }
 
 }
