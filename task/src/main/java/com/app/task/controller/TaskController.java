@@ -2,10 +2,13 @@ package com.app.task.controller;
 
 import com.app.task.model.dto.TaskAddDTO;
 import com.app.task.model.dto.TaskCreateDTO;
+import com.app.task.model.dto.TaskResponseDTO;
 import com.app.task.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/task")
@@ -31,7 +34,10 @@ public class TaskController {
 
     // Obterner Tarea por id
     @GetMapping("/{id}")
-    public ResponseEntity<> getTask(@PathVariable Long id){
+    public ResponseEntity<TaskResponseDTO> getTask(@PathVariable Long id){
+        Optional<TaskResponseDTO> taskResponseOpt = this.taskService.getTask(id);
+        return taskResponseOpt.map(taskResponseDTO -> new ResponseEntity<>(taskResponseDTO, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
 

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public class TaksResponseDTO {
+public class TaskResponseDTO {
 
     @NotNull
     private Long id;
@@ -20,9 +20,9 @@ public class TaksResponseDTO {
 
     private LocalDate create_at;
 
-    public TaksResponseDTO(){}
+    public TaskResponseDTO(){}
 
-    public TaksResponseDTO(String title,String description, Boolean complete, LocalDate create_at){
+    public TaskResponseDTO(String title, String description, Boolean complete, LocalDate create_at){
         this.title = title;
         this.description = description;
         this.complete = complete;
@@ -30,6 +30,7 @@ public class TaksResponseDTO {
     }
 
     // Setters
+    public void setId(Long id){this.id = id;}
     public void setTitle(String title){this.title = title;}
     public void setDescription(String description){this.description = description;}
     public void setComplete(Boolean complete){this.complete = complete;}
