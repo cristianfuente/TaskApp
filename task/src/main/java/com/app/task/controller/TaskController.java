@@ -44,16 +44,19 @@ public class TaskController {
 
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TaskCreateDTO> deleteTaks(@PathVariable Long id){
+        Optional<TaskCreateDTO> taskCreateOpt = this.taskService.deleteTask(id);
+        return taskCreateOpt.map(taskCreateDTO -> new ResponseEntity<>(taskCreateDTO, HttpStatus.NO_CONTENT))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     // Actualizar Tarea por Id
     @PutMapping("{id}")
     public ResponseEntity<> updateTask(@PathVariable Long id){
 
     }
 
-    @DeleteMapping("/{id}"")
-    public ResponseEntity<> deleteTaks(@PathVariable Long id){
-
-    }
 
 
 }

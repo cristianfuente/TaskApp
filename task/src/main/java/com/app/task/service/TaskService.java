@@ -79,4 +79,14 @@ public class TaskService {
                     .toList();
     }
 
+    // Eliminar un Task
+    public Optional<TaskCreateDTO> deleteTask(Long id){
+        Optional<Task> taskOpt = searchTaks(id);
+        if(taskOpt.isEmpty()){
+            return Optional.empty();
+        }
+        this.taskRepository.delete(taskOpt.get());
+        return Optional.of(convertTaskCreateDTO(taskOpt.get()));
+    }
+
 }
