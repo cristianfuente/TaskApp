@@ -3,6 +3,7 @@ package com.app.task.controller;
 import com.app.task.model.dto.TaskAddDTO;
 import com.app.task.model.dto.TaskCreateDTO;
 import com.app.task.model.dto.TaskResponseDTO;
+import com.app.task.model.dto.TaskUptadeDTO;
 import com.app.task.service.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,10 +54,10 @@ public class TaskController {
 
     // Actualizar Tarea por Id
     @PutMapping("{id}")
-    public ResponseEntity<> updateTask(@PathVariable Long id){
-
+    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long id, @RequestBody TaskUptadeDTO taskUptadeDTO){
+        Optional<TaskResponseDTO> taskResponseOpt = this.taskService.updateTask(id,taskUptadeDTO);
+        return taskResponseOpt.map(taskResponseDTO -> new ResponseEntity<>(taskResponseDTO, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-
 
 }

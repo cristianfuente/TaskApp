@@ -3,6 +3,7 @@ package com.app.task.service;
 import com.app.task.model.dto.TaskResponseDTO;
 import com.app.task.model.dto.TaskAddDTO;
 import com.app.task.model.dto.TaskCreateDTO;
+import com.app.task.model.dto.TaskUptadeDTO;
 import com.app.task.model.entity.Task;
 import com.app.task.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -87,6 +88,30 @@ public class TaskService {
         }
         this.taskRepository.delete(taskOpt.get());
         return Optional.of(convertTaskCreateDTO(taskOpt.get()));
+    }
+
+    private Task convertTask(TaskUptadeDTO taskUptadeDTO, Task task){
+        if(taskUptadeDTO.getTitle() != null && !taskUptadeDTO.getTitle().isEmpty()){
+            task.setTitle(taskUptadeDTO.getTitle());
+        }
+        if(taskUptadeDTO.getDescription() != null && !taskUptadeDTO.getDescription().isEmpty()){
+            task.setDescription(taskUptadeDTO.getDescription());
+        }
+        if(taskUptadeDTO.getComplete() != null ){
+            task.setComplete(taskUptadeDTO.getComplete());
+        }
+        task.setCreate_at(LocalDate.now());
+        return task;
+    }
+
+    // Actualizar un Task
+    public Optional<TaskResponseDTO> updateTask(Long id, TaskUptadeDTO taskUptadeDTO){
+        Optional<Task> taskOpt = searchTaks(id);
+        if(taskOpt.isEmpty()){
+            return Optional.empty();
+        }
+        Task task = this.taskRepository.save(convertTask(taskUptadeDTO,taskOpt.get()));
+        return Optional.of(convertTaskResponseDTO(task));
     }
 
 }
