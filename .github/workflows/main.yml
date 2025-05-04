@@ -58,23 +58,23 @@ jobs:
           HOST: ${{ secrets.EC2_HOST }}
           USER: ${{ secrets.EC2_USER }}
         run: |
-          echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
-          ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
-          echo "Current directory: $(pwd)"
-          echo "Listing home directory:"
-          ls -la ~
-          rm -rf task
-          mkdir task && cd task
-          git init
-          git remote add origin https://github.com/Gilgamesh06/TaskApp.git
-          git config core.sparseCheckout true
-          echo "docker-compose.yml" > .git/info/sparse-checkout
-          git pull origin main
-          sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt install -y openjdk-21-jdk docker.io docker-compose-v2
-          sudo chmod 777 /var/run/docker.sock
-          cd task
-          docker compose down --volumes --remove-orphans || true
-          docker pull gilgamesh06/task:latest
-          docker compose up -d
-          exit
+          echo "$PRIVATE_KEY" > github-ec2.pem
+          chmod 600 github-ec2.pem
+          ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} << 'EOF'
+            echo "Current directory: $(pwd)"
+            echo "Listing home directory:"
+            ls -la ~
+            rm -rf task
+            mkdir task && cd task
+            git init
+            git remote add origin https://github.com/Gilgamesh06/TaskApp.git
+            git config core.sparseCheckout true
+            echo "docker-compose.yml" > .git/info/sparse-checkout
+            git pull origin main
+            sudo apt update
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y openjdk-21-jdk docker.io docker-compose-v2
+            sudo chmod 777 /var/run/docker.sock
+            docker compose down --volumes --remove-orphans || true
+            docker pull gilgamesh06/task:latest
+            docker compose up -d
+          EOF
