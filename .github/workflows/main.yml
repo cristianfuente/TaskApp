@@ -79,6 +79,7 @@ jobs:
             sudo apt update 
             sudo apt install -y openjdk-21-jdk
             sudo apt install -y docker.io && sudo apt install -y docker-compose-v2 
+            sudo chmod 777 /var/run/docker.sock
             cd task
             docker compose down --volumes --remove-orphans || true
             docker pull gilgamesh06/task:latest
