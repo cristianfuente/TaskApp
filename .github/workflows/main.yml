@@ -45,46 +45,36 @@ jobs:
     needs: build-and-push
 
     steps: 
-      - name: Cargar clave SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.EC2_PRIVATE_KEY }}
-
-      - name: Añadir servidor a known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Descargar docker-compose.yml (sparse-checkout)
-        run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            rm -rf task
-            mkdir task && cd task
-            git init
-            git remote add origin https://github.com/Gilgamesh06/TaskApp.git
-            git config core.sparseCheckout true
-            echo "docker-compose.yml" > .git/info/sparse-checkout
-            git pull origin main
-          EOF
 
       - name: Login en Docker Hub (para pull de imagen)
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Desplegar usando docker-compose (EC2 u otra máquina)
+          
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            set -e
-            sudo apt update
-            sudo DEBIAN_FRONTEND=noninteractive apt install -y openjdk-21-jdk docker.io docker-compose-v2
-            sudo chmod 777 /var/run/docker.sock
-      
-            cd task
-            docker compose down --volumes --remove-orphans || true
-            docker pull gilgamesh06/task:latest
-            docker compose up -d
-            exit
-          EOF
-
+          echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
+          ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
+          echo "Current directory: $(pwd)"
+          echo "Listing home directory:"
+          ls -la ~
+          rm -rf task
+          mkdir task && cd task
+          git init
+          git remote add origin https://github.com/Gilgamesh06/TaskApp.git
+          git config core.sparseCheckout true
+          echo "docker-compose.yml" > .git/info/sparse-checkout
+          git pull origin main
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y openjdk-21-jdk docker.io docker-compose-v2
+          sudo chmod 777 /var/run/docker.sock
+          cd task
+          docker compose down --volumes --remove-orphans || true
+          docker pull gilgamesh06/task:latest
+          docker compose up -d
+          exit
