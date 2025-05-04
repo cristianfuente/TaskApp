@@ -21,7 +21,7 @@ jobs:
           java-version: '21'
 
       - name: Ejecutar pruebas
-        run: ./test.sh
+        run:  sudo chmod 777 test.sh && ./test.sh
 
       - name: Construir la imagen Docker
         run: docker build -t gilgamesh06/task:${{ github.run_number }} .
