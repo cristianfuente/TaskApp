@@ -76,6 +76,8 @@ jobs:
       - name: Desplegar usando docker-compose (EC2 u otra máquina)
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            sudo apt update 
+            sudo apt install -y openjdk-21-jdk
             sudo apt install -y docker.io && sudo apt install -y docker-compose-v2 
             cd task
             docker compose down --volumes --remove-orphans || true
