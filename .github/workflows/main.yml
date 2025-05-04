@@ -52,6 +52,7 @@ jobs:
 
       - name: Añadir servidor a known_hosts
         run: |
+          rm -rf ~/.ssh
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
@@ -65,6 +66,7 @@ jobs:
             git config core.sparseCheckout true
             echo "docker-compose.yml" > .git/info/sparse-checkout
             git pull origin main
+            exit
           EOF
 
       - name: Login en Docker Hub (para pull de imagen)
