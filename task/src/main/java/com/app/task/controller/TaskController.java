@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     private final TaskService taskService;
@@ -53,7 +53,7 @@ public class TaskController {
     }
 
     // Actualizar Tarea por Id
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long id, @RequestBody TaskUptadeDTO taskUptadeDTO){
         Optional<TaskResponseDTO> taskResponseOpt = this.taskService.updateTask(id,taskUptadeDTO);
         return taskResponseOpt.map(taskResponseDTO -> new ResponseEntity<>(taskResponseDTO, HttpStatus.OK))

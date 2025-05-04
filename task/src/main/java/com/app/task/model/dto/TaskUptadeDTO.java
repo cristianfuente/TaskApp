@@ -15,6 +15,7 @@ public class TaskUptadeDTO {
     public TaskUptadeDTO(){}
 
     public TaskUptadeDTO(String title,String description, Boolean complete){
+        this.title = title;
         this.description = description;
         this.complete = complete;
     }

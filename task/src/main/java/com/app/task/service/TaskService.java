@@ -58,13 +58,13 @@ public class TaskService {
         return convertTaskCreateDTO(this.taskRepository.save(task));
     }
 
-    public Optional<Task> searchTaks(Long id){
+    public Optional<Task> searchTask(Long id){
         return this.taskRepository.findById(id);
     }
 
     // Listar un Task
     public Optional<TaskResponseDTO> getTask(Long id){
-        Optional<Task>  taskOpt = searchTaks(id);
+        Optional<Task>  taskOpt = searchTask(id);
         if(taskOpt.isEmpty()){
             return  Optional.empty();
         }
@@ -82,7 +82,7 @@ public class TaskService {
 
     // Eliminar un Task
     public Optional<TaskCreateDTO> deleteTask(Long id){
-        Optional<Task> taskOpt = searchTaks(id);
+        Optional<Task> taskOpt = searchTask(id);
         if(taskOpt.isEmpty()){
             return Optional.empty();
         }
@@ -90,9 +90,9 @@ public class TaskService {
         return Optional.of(convertTaskCreateDTO(taskOpt.get()));
     }
 
-    private Task convertTask(TaskUptadeDTO taskUptadeDTO, Task task){
+    private Task changeAtributesTask(TaskUptadeDTO taskUptadeDTO, Task task){
         if(taskUptadeDTO.getTitle() != null && !taskUptadeDTO.getTitle().isEmpty()){
-            task.setTitle(taskUptadeDTO.getTitle());
+           task.setTitle(taskUptadeDTO.getTitle());
         }
         if(taskUptadeDTO.getDescription() != null && !taskUptadeDTO.getDescription().isEmpty()){
             task.setDescription(taskUptadeDTO.getDescription());
@@ -106,11 +106,11 @@ public class TaskService {
 
     // Actualizar un Task
     public Optional<TaskResponseDTO> updateTask(Long id, TaskUptadeDTO taskUptadeDTO){
-        Optional<Task> taskOpt = searchTaks(id);
+        Optional<Task> taskOpt = searchTask(id);
         if(taskOpt.isEmpty()){
             return Optional.empty();
         }
-        Task task = this.taskRepository.save(convertTask(taskUptadeDTO,taskOpt.get()));
+        Task task = this.taskRepository.save(changeAtributesTask(taskUptadeDTO,taskOpt.get()));
         return Optional.of(convertTaskResponseDTO(task));
     }
 

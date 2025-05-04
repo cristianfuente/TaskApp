@@ -17,6 +17,7 @@ public class TaskAddDTO {
     public TaskAddDTO(){}
 
     public TaskAddDTO(String title,String description, Boolean complete){
+        this.title = title;
         this.description = description;
         this.complete = complete;
     }
