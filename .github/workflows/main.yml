@@ -65,6 +65,7 @@ jobs:
             git config core.sparseCheckout true
             echo "docker-compose.yml" > .git/info/sparse-checkout
             git pull origin main
+            exit
           EOF
 
       - name: Login en Docker Hub (para pull de imagen)
@@ -84,5 +85,6 @@ jobs:
             docker compose down --volumes --remove-orphans || true
             docker pull gilgamesh06/task:latest
             docker compose up -d
+            exit
           EOF
 
