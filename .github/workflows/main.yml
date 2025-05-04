@@ -52,7 +52,6 @@ jobs:
 
       - name: Añadir servidor a known_hosts
         run: |
-          rm -rf ~/.ssh
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
