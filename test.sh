@@ -2,7 +2,7 @@
 
 # Compila el proyecto
 
-cd /task || exit
+cd task || exit
 
 # Complila el proyecto
 
