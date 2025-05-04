@@ -6,6 +6,7 @@ import com.app.task.model.dto.TaskCreateDTO;
 import com.app.task.model.dto.TaskUptadeDTO;
 import com.app.task.model.entity.Task;
 import com.app.task.repository.TaskRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ public class TaskService {
         taskResponseDTO.setTitle(task.getTitle());
         taskResponseDTO.setDescription(task.getDescription());
         taskResponseDTO.setComplete(task.getComplete());
-        taskResponseDTO.setCreate_at(task.getCreate_at());
+        taskResponseDTO.setCreate_at(task.getCreateAt());
         return taskResponseDTO;
     }
 
@@ -38,7 +39,7 @@ public class TaskService {
         TaskCreateDTO taskCreateDTO = new TaskCreateDTO();
         taskCreateDTO.setTitle(task.getTitle());
         taskCreateDTO.setComplete(task.getComplete());
-        taskCreateDTO.setCreate_at(task.getCreate_at());
+        taskCreateDTO.setCreate_at(task.getCreateAt());
         return taskCreateDTO;
     }
 
@@ -48,11 +49,12 @@ public class TaskService {
         task.setTitle(taskAddDTO.getTitle());
         task.setDescription(taskAddDTO.getDescription());
         task.setComplete(taskAddDTO.getComplete());
-        task.setCreate_at(LocalDate.now());
+        task.setCreateAt(LocalDate.now());
         return task;
     }
 
     // Agrega una nueva Task
+    @Transactional
     public TaskCreateDTO addTask(TaskAddDTO taskAddDTO){
         Task task = convertTask(taskAddDTO);
         return convertTaskCreateDTO(this.taskRepository.save(task));
@@ -81,6 +83,7 @@ public class TaskService {
     }
 
     // Eliminar un Task
+    @Transactional
     public Optional<TaskCreateDTO> deleteTask(Long id){
         Optional<Task> taskOpt = searchTask(id);
         if(taskOpt.isEmpty()){
@@ -100,11 +103,12 @@ public class TaskService {
         if(taskUptadeDTO.getComplete() != null ){
             task.setComplete(taskUptadeDTO.getComplete());
         }
-        task.setCreate_at(LocalDate.now());
+        task.setCreateAt(LocalDate.now());
         return task;
     }
 
     // Actualizar un Task
+    @Transactional
     public Optional<TaskResponseDTO> updateTask(Long id, TaskUptadeDTO taskUptadeDTO){
         Optional<Task> taskOpt = searchTask(id);
         if(taskOpt.isEmpty()){

@@ -135,10 +135,8 @@ public class TaskControllerTest {
         String title = "Estudiar Patrones de diseño";
         String description = "Estudiar el patron de diseño memento";
         Boolean complete = false;
-        LocalDate create_at = LocalDate.now();
-        Task task = new Task(title,description,complete,create_at);
-        TaskCreateDTO taskDelete = new TaskCreateDTO(title,complete,create_at);
-        task.setId(id);
+        LocalDate createAt = LocalDate.now();
+        TaskCreateDTO taskDelete = new TaskCreateDTO(title,complete,createAt);
         when(taskService.deleteTask(eq(id))).thenReturn(Optional.of(taskDelete)); // Usa eq() para valores específicos
 
         // 2. Act & 3. Assert
@@ -166,8 +164,8 @@ public class TaskControllerTest {
         String title = "Estudiar Programacion funciona";
         String description = "Estudiar son los Stream y Las interfaces funcionales";
         Boolean complete = false;
-        LocalDate create_at = LocalDate.now();
-        TaskResponseDTO taskResponseDTO = new TaskResponseDTO(title,description,complete,create_at);
+        LocalDate createAt = LocalDate.now();
+        TaskResponseDTO taskResponseDTO = new TaskResponseDTO(title,description,complete,createAt);
 
         // Define el comportamiento del mock: cuando se llame a actualizar con cualquier Tarea, devuelve taskResponseDTO
         when(taskService.updateTask(eq(id),any(TaskUptadeDTO.class))).thenReturn(Optional.of(taskResponseDTO));

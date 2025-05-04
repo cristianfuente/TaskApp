@@ -40,7 +40,7 @@ public class TaskServiceTest {
         String title = "Ingenieria de Software 3";
         String description = "Realizar el taller 2 creacion de un pipelide de despliege continuo";
         Boolean complete = false;
-        LocalDate create_at = LocalDate.now();
+        LocalDate createAt = LocalDate.now();
         TaskAddDTO taskAddDTO = new TaskAddDTO(title,description,complete);
 
         // Define el comportamiento del Mock: cuando se llame save
@@ -54,7 +54,7 @@ public class TaskServiceTest {
         // 3. Assert
         assertNotNull(result);
         assertEquals(title,result.getTitle());
-        assertEquals(create_at,result.getCreate_at());
+        assertEquals(createAt,result.getCreate_at());
         assertFalse(result.getComplete());
 
         // Captura el argumento pasado al metodo save
@@ -66,7 +66,7 @@ public class TaskServiceTest {
         assertEquals(title, savedTask.getTitle());
         assertEquals(description, savedTask.getDescription());
         assertEquals(complete, savedTask.getComplete());
-        assertEquals(create_at, savedTask.getCreate_at());
+        assertEquals(createAt, savedTask.getCreateAt());
     }
 
     @Test
@@ -119,8 +119,8 @@ public class TaskServiceTest {
         String title = "Ingenieria de Software 3";
         String description = "Realizar el taller 2 creacion de un pipelide de despliege continuo";
         Boolean complete = false;
-        LocalDate create_at = LocalDate.now();
-        Task task = new Task(title, description, complete, create_at);
+        LocalDate createAt = LocalDate.now();
+        Task task = new Task(title, description, complete, createAt);
         task.setId(id); // Asignar el ID
 
         // Simula el comportamiento del Mock para findById
@@ -136,7 +136,7 @@ public class TaskServiceTest {
         assertTrue(resultOpt.isPresent());
         assertEquals(title, resultOpt.get().getTitle());
         assertEquals(complete, resultOpt.get().getComplete());
-        assertEquals(create_at, resultOpt.get().getCreate_at());
+        assertEquals(createAt, resultOpt.get().getCreate_at());
 
         // Verifica que se eliminó la tarea correcta
         verify(taskRepository).delete(task); // Verifica que se eliminó la tarea
@@ -150,8 +150,8 @@ public class TaskServiceTest {
         String title = "Ingenieria de Software 3";
         String description = "Realizar el taller 2 creacion de un pipelide de despliege continuo";
         Boolean complete = false;
-        LocalDate create_at = LocalDate.now();
-        Task task = new Task(title, description, complete, create_at);
+        LocalDate createAt = LocalDate.now();
+        Task task = new Task(title, description, complete, createAt);
 
         when(taskRepository.findById(id)).thenReturn(Optional.empty());
 
