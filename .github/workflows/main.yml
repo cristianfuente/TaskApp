@@ -86,7 +86,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           aws lambda invoke \
-            --function-name cdcd-notification \
+            --function-name notification-uis \
             --region $AWS_REGION \
             --payload '{}' \
             --cli-binary-format raw-in-base64-out \
