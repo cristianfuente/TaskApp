@@ -88,6 +88,6 @@ jobs:
           aws lambda invoke \
             --function-name cdcd-notification \
             --region $AWS_REGION \
-            --payload '{"message": "El despliegue fue exitoso"}' \
-            response.json
-          cat response.json
+            --payload '{}' \
+            --cli-binary-format raw-in-base64-out \
+            /dev/null
